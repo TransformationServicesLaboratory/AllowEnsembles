@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.tsl.gr/pssgr_util/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="pssgr_util" targetNamespace="http://services.tsl.gr/pssgr_util/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services.tsl.gr/pssgr_util/">
+      <xsd:element name="Evaluation">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="tns:PRoute" maxOccurs="unbounded" minOccurs="1"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EvaluationResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="out" type="tns:PRoute" maxOccurs="1" minOccurs="1"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    
+      <xsd:complexType name="PRoute">
+      	<xsd:sequence>
+      		<xsd:element name="id" type="xsd:int"></xsd:element>
+      		<xsd:element name="day" type="xsd:date"></xsd:element>
+      		<xsd:element name="pick-up" type="xsd:string"
+      			maxOccurs="unbounded" minOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="pTime" type="xsd:time"
+      			maxOccurs="unbounded" minOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="cost" type="xsd:double"></xsd:element>
+      		<xsd:element name="prf" type="tns:Preference"
+      			maxOccurs="unbounded" minOccurs="1">
+      		</xsd:element>
+      		<xsd:element name="state" type="xsd:int"></xsd:element>
+      		<xsd:element name="utility" type="xsd:double"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+    
+      <xsd:complexType name="Preference">
+      	<xsd:sequence>
+      		<xsd:element name="value" type="xsd:boolean" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="EvaluationRequest">
+    <wsdl:part element="tns:Evaluation" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="EvaluationResponse">
+    <wsdl:part element="tns:EvaluationResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="pssgr_util">
+    <wsdl:operation name="Evaluation">
+      <wsdl:input message="tns:EvaluationRequest"/>
+      <wsdl:output message="tns:EvaluationResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="pssgr_utilSOAP" type="tns:pssgr_util">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Evaluation">
+      <soap:operation soapAction="http://services.tsl.gr/pssgr_util/Evaluation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="pssgr_util">
+    <wsdl:port binding="tns:pssgr_utilSOAP" name="pssgr_utilSOAP">
+      <soap:address location="http://services.tsl.gr:8080/pssgr_util/services/pssgr_util/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
